@@ -9,7 +9,7 @@
   "scripts": {
     "build": "nps build",
     "commit": "nps commit",
-    "precommit": "lint-staged && nps validate.withCoverage",
+    "precommit": "nps validate.withCoverage",
     "prettier": "prettier --single-quote --no-semi",
     "start": "nps",
     "test": "nps test"
