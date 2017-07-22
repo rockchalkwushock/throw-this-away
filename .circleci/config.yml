@@ -21,16 +21,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - repo-yarn-{{ checksum "yarn.lock" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - repo-yarn-
 
       - run: yarn install
 
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - ~/.yarn-cache
+          key: repo-yarn-{{ checksum "yarn.lock" }}
 
       # Run validation checks & generate coverage reports
       - run: yarn start validate.withCoverage
@@ -42,7 +42,7 @@ jobs:
       - run: yarn start reportCoverage
 
       - store_artifacts:
-          path: ./coverage/clover.xml # Testing this out was originally test-results.xml, might be a istanbul vs jest thing?
+          path: ./coverage/clover.xml
           prefix: tests
 
       - store_artifacts:
