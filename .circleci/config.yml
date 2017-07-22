@@ -4,33 +4,8 @@
 #
 version: 2
 jobs:
-	build:
-		working_directory: ~/tmp
-		docker:
-      # specify the version you desire here
-			- image: circleci/node:6.11.1 #LTS
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-		steps:
-			- checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies={{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-			- run: yarn
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      # Run build script
-      - run: yarn build
 	test:
+    working_directory: ~/repo
 		docker:
 			- image: circleci/node:6.11.1 #LTS
 		steps:
@@ -58,6 +33,32 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
+  build:
+		working_directory: ~/repo
+		docker:
+      # specify the version you desire here
+			- image: circleci/node:6.11.1 #LTS
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+		steps:
+			- checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies={{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+			- run: yarn
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      # Run build script
+      - run: yarn build
 # Workflow for CircleCI to follow
 workflows:
   version: 2
