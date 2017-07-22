@@ -42,7 +42,7 @@ jobs:
       - run: yarn start reportCoverage
 
       - store_artifacts:
-          path: test-results.xml
+          path: clover.xml # Testing this out was originally test-results.xml, might be a istanbul vs jest thing?
           prefix: tests
 
       - store_artifacts:
@@ -50,5 +50,5 @@ jobs:
           prefix: coverage
 
       - store_test_results:
-          path: test-results.xml
+          path: clover.xml
 
