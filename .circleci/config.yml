@@ -4,52 +4,52 @@
 #
 version: 2
 jobs:
-	build:
-		docker:
+  build:
+    docker:
       # specify the version you desire here
-			- image: circleci/node:6.11.1 #LTS
+      - image: circleci/node:6.11.1 #LTS
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+      working_directory: ~/repo
 
-		steps:
-			- checkout
+      steps:
+        - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
+        # Download and cache dependencies
+        - restore_cache:
           keys:
-          - v1-dependencies={{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies={{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependecies-
 
-			- run: yarn install
+        - run: yarn install
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+        - save_cache:
+            paths:
+              - node_modules
+            key: v1-dependencies-{{ checksum "package.json" }}
 
-      # Run validation checks & generate coverage reports
-			- run: yarn start validate.withCoverage
+        # Run validation checks & generate coverage reports
+        - run: yarn start validate.withCoverage
 
-      # Run build script
-      - run: yarn build
+        # Run build script
+        - run: yarn build
 
-      # Send coverage report to Codecov
-      - run: yarn start reportCoverage
+        # Send coverage report to Codecov
+        - run: yarn start reportCoverage
 
-      - store_artifacts:
-          path: test-results.xml
-          prefix: tests
+        - store_artifacts:
+            path: test-results.xml
+            prefix: tests
 
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
+        - store_artifacts:
+            path: coverage
+            prefix: coverage
 
-      - store_test_results:
-          path: test-results.xml
+        - store_test_results:
+            path: test-results.xml
 
